@@ -6,7 +6,7 @@ import "./lib/GenesisUtils.sol";
 import "./interfaces/ICircuitValidator.sol";
 import "./verifiers/ZKPVerifier.sol";
 
-contract DorseContract is ZKPVerifier {
+contract PolygonAuthentication is ZKPVerifier {
     uint64 public constant TRANSFER_REQUEST_ID = 1;
 
     string public _name;
@@ -50,6 +50,6 @@ contract DorseContract is ZKPVerifier {
     }
 
     function isAuthenticated() external view returns (uint256 id) {
-        return addressToId[_msgSender()];
+        return addressToId[_msgSender()] != 0;
     }
 }
