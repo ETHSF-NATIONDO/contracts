@@ -71,7 +71,7 @@ contract ERC4973 is IERC4973, EIP712, ERC165, IERC721Metadata {
     }
 
     function take(address from, string calldata uri, bytes calldata signature) external virtual returns (uint256) {
-        require(msg.sender != to, "give: cannot give from self");
+        require(msg.sender != from, "give: cannot give from self");
         uint256 tokenId = _safeCheckAgreement(msg.sender, from, uri, signature);
         _mint(from, msg.sender, tokenId, uri);
         _usedHashes.set(tokenId);
@@ -83,7 +83,7 @@ contract ERC4973 is IERC4973, EIP712, ERC165, IERC721Metadata {
         virtual returns (uint256)
     {
         bytes32 h = _getHash(active, passive, uri);
-        uint256 tokenId = uint256(hash);
+        uint256 tokenId = uint256(h);
         require(
             SignatureChecker.isValidSignatureNow(passive, h, signature), "_safeCheckAgreement: invalid signature"
         );
@@ -94,7 +94,7 @@ contract ERC4973 is IERC4973, EIP712, ERC165, IERC721Metadata {
 
     function _getHash(address active, address passive, string calldata uri) internal view returns (bytes32) {
         bytes32 structHash = keccak256(abi.encode(AGREEMENT_HASH, active, passive, keccak256(bytes(uri))));
-        return _hashTypedDataV4(structHash)
+        return _hashTypedDataV4(structHash);
     }
 
     function _exists(uint256 tokenId) internal view virtual returns (bool) {
