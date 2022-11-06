@@ -8,12 +8,12 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 //Initializable, UUPSUpgradeable,
 
-contract SBT is ERC4973, Ownable, ReentrancyGuard {
+contract SBT is ERC4973, ReentrancyGuard {
 
     uint256 public index = 0;
     constructor(string memory name_, string memory symbol_) ERC4973(name_, symbol_, "1") {}
 
-    function mint(address beneficiary_, string calldata uri_) external onlyOwner nonReentrant{
+    function mint(address beneficiary_, string calldata uri_) external nonReentrant{
         _mint(msg.sender, beneficiary_, index, uri_);
         index += 1;
     }
